@@ -28,7 +28,7 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
     const { email, password } = req.body
-    console.log(`inside register controller function`);
+    console.log(`inside login controller function`);
     try {
         const existingUser = await users.findOne({ email, password })
         if (existingUser) {
@@ -45,3 +45,25 @@ exports.login = async (req, res) => {
     }
 
 }
+
+
+// updateprofile
+
+exports.editUser=async(req,res)=>{
+    const userId = req.payload
+    const {username,email,password,github,linkedin,profileImage} =req.body
+    const profile = req.file?req.file.filename:profileImage
+
+    try {
+        const updateUser = await users.findByIdAndUpdate({_id:userId},{ username, email, password, github, linkedin, profile
+
+        },{new:true})
+        await updateUser.save()
+        res.status(200).json(updateUser)
+    } catch (err) {
+        res.status(401).json(err)
+    }
+}
+
+// https://github.com/adhila
+// https://www.linkedin.com/in/adila
